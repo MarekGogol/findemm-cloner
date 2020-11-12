@@ -5,7 +5,7 @@ module.exports = {
     {
       name: process.env.PM2_CLUSER_NAME||'app-cloner',
       exec_mode: 'cluster',
-      instances: 'max', // Or a number of instances
+      instances: 1, // Or a number of instances
       script: './index.js',
       args: 'start'
     }
