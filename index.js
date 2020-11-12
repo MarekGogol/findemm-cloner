@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+let i = {};
+
 var clonePaths = {
     '/qpe/getProjectInfo?version=2' : 15000,
     '/qpe/getTagPosition?version=2' : 1000,
@@ -15,12 +17,16 @@ var config = {
 };
 
 var cloneData = async (path) => {
-    console.log('cloning: '+path);
+    console.log('['+i[path]+'] cloning: '+path);
 
     var url = process.env.QUUPPA_API+path;
 
     try {
         let response = await axios.get(url).then(response => response.data);
+
+        if ( typeof response == 'object' ){
+            response = JSON.stringify(response);
+        }
 
         try {
             let receiverResponse = await axios.post(process.env.API_SERVER, qs.stringify({
@@ -33,10 +39,15 @@ var cloneData = async (path) => {
     } catch (e){
         console.error('error receiving data:', e);
     }
+
+    i[path]++;
 };
 
-
 let receiver = async (path, interval) => {
+    if ( !(path in i) ) {
+        i[path] = 0;
+    }
+
     await cloneData(path);
 
     setTimeout(() => {
