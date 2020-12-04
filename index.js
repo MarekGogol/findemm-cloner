@@ -4,7 +4,7 @@ let i = {};
 
 var clonePaths = {
     '/qpe/getProjectInfo?version=2' : 15000,
-    '/qpe/getTagPosition?version=2' : 1000,
+    '/qpe/getTagPosition?version=2' : parseInt(process.env.POSITION_SYNC_MS) ?: 2000,
 };
 
 var axios = require('axios'),
